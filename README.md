@@ -1,54 +1,93 @@
-# React + TypeScript + Vite
+# Cheez Vault Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cheez Vault is a web app that allows users to securely send notes, such as secret keys or passwords, to others. The app connects to an API that handles most of the functionality, providing a secure and seamless experience for sharing sensitive information.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Securely send and receive notes
+- Connects to an external API for functionality
+- Designed to keep sensitive information private and safe
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+To get started with the app, follow these steps:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ocheezyy/cheez-vault.web.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Navigate to the project directory and install the necessary dependencies:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+cd cheez-vault.web
+npm install
 ```
+
+### 3. Set up environment variables
+
+The only required environment variable is `VITE_API_URL`, which should point to the API the app connects to.
+
+Create a `.env` file in the root of the project and add the following:
+
+```env
+VITE_API_URL=your-api-url
+```
+
+### 4. Start the development server
+
+To start the development server, run:
+
+```bash
+npm run dev
+```
+
+This will start the app on http://localhost:5173 (or a different port if 5173 is unavailable).
+
+### 5. Build the app
+
+To build the app for production, run:
+
+```bash
+npm run build
+```
+
+Available Scripts
+
+In the project directory, you can run:
+
+- `npm run dev` — Starts the development server
+
+- `npm run build` — Builds the app for production
+
+- `npm run lint` — Runs the linter to check for code style issues
+
+- `npm run preview` — Previews the production build locally
+
+
+### Dependencies
+
+    @radix-ui/react-*— Radix UI components for building UI elements
+
+    @tanstack/react-query — React Query for data fetching and state management
+
+    @tanstack/react-router — React Router for routing
+
+    tailwindcss — Tailwind CSS for utility-first styling
+
+    lucide-react — React icons for easy usage
+
+    next-themes — Theme management for dark/light mode
+
+### Dev Dependencies
+
+    vite — Build tool for fast development and production builds
+
+    typescript — TypeScript for type safety
+
+    eslint — Linter for enforcing code quality
+
+    @vitejs/plugin-react-swc — React plugin for Vite with SWC support
