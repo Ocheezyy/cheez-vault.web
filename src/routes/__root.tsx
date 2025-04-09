@@ -2,8 +2,9 @@ import {Outlet, createRootRoute, Link, useLocation} from '@tanstack/react-router
 import "../index.css";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {ArrowLeft, Moon, Sun} from "lucide-react";
-import {Button} from "@/components/ui/button.tsx";
-import {useState} from "react";
+import {Button} from "@/components/ui/button";
+import { useDarkMode } from '@/components/dark-mode-provider';
+
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -12,17 +13,10 @@ export const Route = createRootRoute({
 const queryClient = new QueryClient()
 
 function RootComponent() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const pathname = useLocation({
     select: (location) => location.pathname,
   })
-
-  console.log(pathname);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark', !isDarkMode);
-  };
 
   if (pathname === '/') return (
     <QueryClientProvider client={queryClient}>

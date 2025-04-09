@@ -6,8 +6,8 @@ import { Label } from '@/components/ui/label'
 import {createFileRoute, useNavigate} from '@tanstack/react-router'
 import { Eye, EyeOff } from 'lucide-react'
 import { FormEvent, useState } from 'react'
-import {useCreateNote} from "@/hooks/useCreateNote.ts";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
+import {useCreateNote} from "@/hooks/useCreateNote";
+import {Checkbox} from "@/components/ui/checkbox";
 
 export const Route = createFileRoute('/create/')({
   component: CreateNote,

@@ -1,24 +1,35 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Shield } from 'lucide-react'
+import { Shield } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
+import { useDarkMode } from '@/components/dark-mode-provider';
 
 export const Route = createFileRoute('/')({
   component: Home,
 })
 
 function Home() {
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4">
       <div className="w-full max-w-md space-y-8">
-        <div className="flex flex-col items-center text-center">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary">
-            <Shield className="h-6 w-6 text-primary-foreground" />
+        <div className="flex justify-between items-center mb-4">
+          <Button onClick={toggleDarkMode} variant="ghost" size="icon" className="text-slate-600 dark:text-slate-300">
+            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
+
+          {/* App title */}
+          <div className="flex flex-col items-center text-center">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary">
+              <Shield className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Cheez Vault</h1>
+            <p className="mt-2 text-slate-600 dark:text-slate-400">
+              Share sensitive information that self-destructs after being viewed.
+            </p>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Cheez Vault</h1>
-          <p className="mt-2 text-slate-600 dark:text-slate-400">
-            Share sensitive information that self-destructs after being viewed.
-          </p>
         </div>
 
         <Card className="bg-white dark:bg-slate-900">
@@ -70,7 +81,6 @@ function Home() {
         </Card>
       </div>
     </div>
-
   )
 }
 
