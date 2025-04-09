@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import {createFileRoute, useNavigate} from '@tanstack/react-router'
 import { Eye, EyeOff } from 'lucide-react'
-import { FormEvent, useState } from 'react'
+import {FormEvent, useEffect, useState} from 'react'
 import {useCreateNote} from "@/hooks/useCreateNote";
 import {Checkbox} from "@/components/ui/checkbox";
 
@@ -20,7 +20,7 @@ function CreateNote() {
     const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate({ from: "/create" });
-    const { mutate: createNote } = useCreateNote(navigate);
+    const { mutate: createNote, isError } = useCreateNote(navigate);
   
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
       event.preventDefault();
@@ -46,6 +46,12 @@ function CreateNote() {
         setIsSubmitting(false);
       }
     }
+
+  useEffect(() => {
+    if (isError) {
+      setIsSubmitting(false);
+    }
+  }, [isError]);
 
     const onCheckChange = (checkedState: boolean) => {
       setHasExpiration(checkedState);
