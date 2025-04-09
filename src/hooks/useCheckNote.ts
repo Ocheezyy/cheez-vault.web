@@ -5,7 +5,7 @@ type CheckNoteResponse = {
 }
 
 const fetchNoteStatus = async (noteId: string): Promise<CheckNoteResponse> => {
-  const response = await fetch(`/check_note/${noteId}`);
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/check_note/${noteId}`);
   if (!response.ok) {
     throw new Error("Failed to fetch note status");
   }
@@ -17,5 +17,6 @@ export const useCheckNote = (noteId: string) => {
     queryKey: ["checkNote", noteId],
     queryFn: () => fetchNoteStatus(noteId),
     enabled: !!noteId, // Ensures query runs only when noteId is provided
+    retry: false,
   });
 };

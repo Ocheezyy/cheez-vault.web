@@ -4,8 +4,8 @@ type GetNoteResponse = {
   note_content: string;
 }
 
-const fetchNote = async (noteId: string, password?: string): Promise<GetNoteResponse> => {
-  const response = await fetch("/get_note/", {
+const fetchNote = async (noteId: string, password: string | null): Promise<GetNoteResponse> => {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/get_note/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ note_id: noteId, password }),
@@ -15,12 +15,14 @@ const fetchNote = async (noteId: string, password?: string): Promise<GetNoteResp
     throw new Error("Failed to retrieve note");
   }
 
-  return response.json();
+  const responseJson = await response.json() as GetNoteResponse;
+  return responseJson;
 };
 
 export const useGetNote = () => {
   return useMutation({
-    mutationFn: ({ noteId, password }: { noteId: string; password?: string }) =>
-      fetchNote(noteId, password),
+    mutationFn: async ({ noteId, password }: { noteId: string; password: string | null }) =>
+      await fetchNote(noteId, password),
+    retry: false,
   });
 };

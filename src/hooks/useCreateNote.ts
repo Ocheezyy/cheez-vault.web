@@ -10,7 +10,7 @@ const createNote = async ({
   password: string | null;
   ttl: number | null; // Expiration in seconds
 }) => {
-  const response = await fetch("/create_note/", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/create_note/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content, password, ttl }),
@@ -27,7 +27,7 @@ export const useCreateNote = (navigateFn:  UseNavigateResult<"/share/$noteId">) 
   return useMutation({
     mutationFn: createNote,
     onSuccess: async (data) => {
-      await navigateFn({ to: "/share/$noteId", params: data.note_id })
+      await navigateFn({ to: "/share/$noteId", params: { noteId: data.note_id } })
     }
   });
 };
