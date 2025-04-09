@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import {ArrowLeft, ShieldAlert, AlertCircle, Check, Copy, EyeOff, Eye, Lock} from 'lucide-react'
+import { ShieldAlert, AlertCircle, Check, Copy, EyeOff, Eye, Lock} from 'lucide-react'
 import {Dispatch, FormEvent, SetStateAction, useEffect, useState} from 'react'
 import { useCheckNote } from "@/hooks/useCheckNote";
 import { useGetNote } from "@/hooks/useGetNote";
@@ -97,19 +97,16 @@ function ViewNote() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100 p-4">
-      <div className="w-full max-w-md">
-        <Link to="/" className="mb-4 flex items-center text-sm text-slate-600 hover:text-slate-900">
-          <ArrowLeft className="mr-1 h-4 w-4" />
-          Back to home
-        </Link>
-
-        <Card>
+        <Card className="bg-white dark:bg-slate-900">
           <CardHeader>
-            <CardTitle>
-              {error ? "Note Unavailable" : needsPassword ? "Password Protected Note" : "Secure Note"}
+            <CardTitle className="text-slate-900 dark:text-white">
+              {error
+                ? "Note Unavailable"
+                : needsPassword
+                  ? "Password Protected Note"
+                  : "Secure Note"}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-slate-600 dark:text-slate-400">
               {error
                 ? "This note may have expired or been viewed already"
                 : needsPassword
@@ -138,15 +135,16 @@ function ViewNote() {
           {!isLoading && !needsPassword && !error && (
             <CardFooter>
               <Link to="/" className="w-full">
-                <Button variant="secondary" className="w-full">
+                <Button
+                  variant="secondary"
+                  className="w-full dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
+                >
                   Create a new note
                 </Button>
               </Link>
             </CardFooter>
           )}
         </Card>
-      </div>
-    </div>
   )
 }
 
@@ -167,28 +165,28 @@ type NoteCardProps = {
 
 function NoteCard({ isLoading, error, needsPassword, handlePasswordSubmit, showPassword, password, setPassword, setShowPassword, isCheckingPassword, noteContent, copied, copyToClipboard }: NoteCardProps) {
   if (isLoading) return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-        <p className="mt-4 text-sm text-slate-500">Checking note status...</p>
-      </div>
+    <div className="flex flex-col items-center justify-center py-12">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+      <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">Checking note status...</p>
+    </div>
   );
 
   if (error) return (
     <div className="flex flex-col items-center py-6 text-center">
-      <ShieldAlert className="mb-2 h-12 w-12 text-red-500" />
-      <p className="text-slate-700">{error}</p>
+      <ShieldAlert className="mb-2 h-12 w-12 text-red-500 dark:text-red-400" />
+      <p className="text-slate-700 dark:text-slate-300">{error}</p>
     </div>
   );
 
   if (needsPassword && !noteContent) return (
     <form onSubmit={handlePasswordSubmit} className="space-y-4">
       <div className="flex flex-col items-center py-4 text-center">
-        <Lock className="mb-2 h-12 w-12 text-amber-500" />
-        <p className="text-slate-700">This note is protected with a password</p>
+        <Lock className="mb-2 h-12 w-12 text-amber-500 dark:text-amber-400" />
+        <p className="text-slate-700 dark:text-slate-300">This note is protected with a password</p>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Enter password</Label>
+        <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">Enter password</Label>
         <div className="relative">
           <Input
             id="password"
@@ -203,7 +201,7 @@ function NoteCard({ isLoading, error, needsPassword, handlePasswordSubmit, showP
             type="button"
             variant="ghost"
             size="icon"
-            className="absolute right-0 top-0 h-full px-3 py-2 text-muted-foreground"
+            className="absolute right-0 top-0 h-full px-3 py-2 text-muted-foreground dark:text-muted-foreground"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -213,12 +211,12 @@ function NoteCard({ isLoading, error, needsPassword, handlePasswordSubmit, showP
       </div>
 
       {error && (
-        <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+        <div className="rounded-md bg-red-50 p-3 text-sm text-red-800 dark:bg-red-900 dark:text-red-400">
           <p>{error}</p>
         </div>
       )}
 
-      <Button type="submit" className="w-full" disabled={isCheckingPassword}>
+      <Button type="submit" className="w-full dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700" disabled={isCheckingPassword}>
         {isCheckingPassword ? (
           <>
             <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
@@ -233,18 +231,18 @@ function NoteCard({ isLoading, error, needsPassword, handlePasswordSubmit, showP
 
   if (noteContent) return (
     <div className="space-y-4">
-      <div className="rounded-md bg-amber-50 p-3 text-sm text-amber-800">
+      <div className="rounded-md bg-amber-50 p-3 text-sm text-amber-800 dark:bg-amber-900 dark:text-amber-400">
         <div className="flex items-center">
-          <AlertCircle className="mr-2 h-4 w-4" />
+          <AlertCircle className="mr-2 h-4 w-4 text-amber-800 dark:text-amber-400" />
           <p>This note will be destroyed after you leave this page</p>
         </div>
       </div>
 
-      <div className="rounded-md border p-4">
-        <pre className="whitespace-pre-wrap break-words text-sm">{noteContent}</pre>
+      <div className="rounded-md border p-4 dark:border-slate-700 dark:bg-slate-800">
+        <pre className="whitespace-pre-wrap break-words text-sm text-slate-900 dark:text-slate-100">{noteContent}</pre>
       </div>
 
-      <Button onClick={copyToClipboard} variant="outline" className="w-full">
+      <Button onClick={copyToClipboard} variant="outline" className="w-full dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700">
         {copied ? (
           <>
             <Check className="mr-2 h-4 w-4" />

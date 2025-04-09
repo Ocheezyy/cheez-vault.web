@@ -3,8 +3,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import {createFileRoute, Link, useNavigate} from '@tanstack/react-router'
-import { ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import {createFileRoute, useNavigate} from '@tanstack/react-router'
+import { Eye, EyeOff } from 'lucide-react'
 import { FormEvent, useState } from 'react'
 import {useCreateNote} from "@/hooks/useCreateNote.ts";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
@@ -52,70 +52,69 @@ function CreateNote() {
     }
   
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100 p-4">
-        <div className="w-full max-w-md">
-          <Link to="/" className="mb-4 flex items-center text-sm text-slate-600 hover:text-slate-900">
-            <ArrowLeft className="mr-1 h-4 w-4" />
-            Back to home
-          </Link>
-  
-          <Card>
+          <Card className="bg-white dark:bg-slate-900">
             <CardHeader>
-              <CardTitle>Create a secure note</CardTitle>
-              <CardDescription>Your note will be encrypted and will expire when opened or when the time runs out.</CardDescription>
+              <CardTitle className="text-slate-900 dark:text-white">Create a secure note</CardTitle>
+              <CardDescription className="text-slate-600 dark:text-slate-400">
+                Your note will be encrypted and will expire when opened or when the time runs out.
+              </CardDescription>
             </CardHeader>
             <form onSubmit={handleSubmit} autoComplete="off">
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="content">Your secret note</Label>
+                  <Label htmlFor="content" className="text-slate-900 dark:text-slate-200">Your secret note</Label>
                   <Textarea
                     id="content"
                     name="content"
                     placeholder="Type your sensitive information here..."
-                    className="min-h-[150px]"
+                    className="min-h-[150px] bg-white dark:bg-slate-800 dark:text-white dark:placeholder-slate-400"
                     required
                   />
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     This content will be encrypted and will disappear after being viewed.
                   </p>
                 </div>
-  
+
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password (optional)</Label>
+                  <Label htmlFor="password" className="text-slate-900 dark:text-slate-200">Password (optional)</Label>
                   <div className="relative">
                     <Input
                       id="password"
                       name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Add an extra layer of security"
+                      className="bg-white dark:bg-slate-800 dark:text-white dark:placeholder-slate-400"
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon"
-                      className="absolute right-0 top-0 h-full px-3 py-2 text-muted-foreground"
+                      className="absolute right-0 top-0 h-full px-3 py-2 text-muted-foreground dark:text-slate-400"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
                     </Button>
                   </div>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     If set, the recipient will need this password to view the note.
                   </p>
                 </div>
-  
+
                 <div className="space-y-2">
-                  <Label>Expiration settings</Label>
+                  <Label className="text-slate-900 dark:text-slate-200">Expiration settings</Label>
                   <div className="flex items-center space-x-2">
                     <Checkbox id="hasExpiration" onCheckedChange={onCheckChange} />
-                    <label htmlFor="hasExpiration" className="text-slate-500">Expire after time period?</label>
+                    <label htmlFor="hasExpiration" className="text-slate-500 dark:text-slate-400">
+                      Expire after time period?
+                    </label>
                   </div>
-
 
                   {hasExpiration && (
                     <div className="mt-2 space-y-2">
-                      <Label htmlFor="expirationTime">Expiration time (hours)</Label>
+                      <Label htmlFor="expirationTime" className="text-slate-900 dark:text-slate-200">
+                        Expiration time (hours)
+                      </Label>
                       <Input
                         id="expirationTime"
                         name="expirationTime"
@@ -124,6 +123,7 @@ function CreateNote() {
                         max="168"
                         value={expirationTime}
                         onChange={(e) => setExpirationTime(e.target.value)}
+                        className="bg-white dark:bg-slate-800 dark:text-white"
                       />
                     </div>
                   )}
@@ -136,8 +136,6 @@ function CreateNote() {
               </CardFooter>
             </form>
           </Card>
-        </div>
-      </div>
     )
   }
   
