@@ -4,8 +4,8 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import {createFileRoute, Link, useNavigate} from '@tanstack/react-router'
-import { ArrowLeft } from 'lucide-react'
-import {FormEvent, useState} from 'react'
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import { FormEvent, useState } from 'react'
 import {useCreateNote} from "@/hooks/useCreateNote.ts";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 
@@ -17,30 +17,30 @@ function CreateNote() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [expirationTime, setExpirationTime] = useState("24");
     const [hasExpiration, setHasExpiration] = useState(false);
-    const navigate = useNavigate({ from: "/create" })
+    const [showPassword, setShowPassword] = useState(false);
+
+    const navigate = useNavigate({ from: "/create" });
     const { mutate: createNote } = useCreateNote(navigate);
-
-
   
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-      event.preventDefault()
-      setIsSubmitting(true)
+      event.preventDefault();
+      setIsSubmitting(true);
   
       const formData = new FormData(event.currentTarget);
-      const content = formData.get("content") as string;
-      const password = formData.get("password") as string;
-      const expirationTime = formData.get("expirationTime") as string;
+      const contentForm = formData.get("content") as string;
+      const passwordForm = formData.get("password") as string;
+      const expirationTimeForm = formData.get("expirationTime") as string;
 
-      let expirationVal: number | null = null;
-      let passwordVal: string | null = password;
+      let expirationTime: number | null = null;
+      let messagePassword: string | null = passwordForm;
       try {
-        if (hasExpiration && expirationTime.replace(" ", "") !== "")
-          expirationVal = Number(expirationTime) * 3600;
+        if (hasExpiration && expirationTimeForm.replace(" ", "") !== "")
+          expirationTime = Number(expirationTimeForm) * 3600;
 
-        if (!password || password.replace(" ", "") === "")
-          passwordVal = null;
+        if (!passwordForm || passwordForm.replace(" ", "") === "")
+          messagePassword = null;
 
-        createNote({content, password: passwordVal, ttl: expirationVal });
+        createNote({ content: contentForm, password: messagePassword, ttl: expirationTime });
       } catch (error) {
         console.error("Failed to create note:", error);
         setIsSubmitting(false);
@@ -64,7 +64,7 @@ function CreateNote() {
               <CardTitle>Create a secure note</CardTitle>
               <CardDescription>Your note will be encrypted and will expire when opened or when the time runs out.</CardDescription>
             </CardHeader>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="content">Your secret note</Label>
@@ -82,7 +82,24 @@ function CreateNote() {
   
                 <div className="space-y-2">
                   <Label htmlFor="password">Password (optional)</Label>
-                  <Input id="password" name="password" type="password" placeholder="Add an extra layer of security" />
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Add an extra layer of security"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 py-2 text-muted-foreground"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                    </Button>
+                  </div>
                   <p className="text-xs text-slate-500">
                     If set, the recipient will need this password to view the note.
                   </p>
@@ -95,11 +112,13 @@ function CreateNote() {
                     <label htmlFor="hasExpiration" className="text-slate-500">Expire after time period?</label>
                   </div>
 
+
                   {hasExpiration && (
                     <div className="mt-2 space-y-2">
                       <Label htmlFor="expirationTime">Expiration time (hours)</Label>
                       <Input
                         id="expirationTime"
+                        name="expirationTime"
                         type="number"
                         min="1"
                         max="168"
